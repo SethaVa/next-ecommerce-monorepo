@@ -1,0 +1,32 @@
+module.exports = {
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    project: 'tsconfig.json',
+    tsconfigRootDir: __dirname,
+    sourceType: 'module',
+  },
+  plugins: ['@typescript-eslint/eslint-plugin'],
+  extends: [
+    'plugin:@typescript-eslint/recommended',
+    'plugin:prettier/recommended',
+  ],
+  root: true,
+  env: { node: true, jest: true },
+  ignorePatterns: [
+    '.eslintrc.js',
+    'dist/',
+    '**/*.spec.ts',        // ✅ skip unit tests entirely
+    '**/*.e2e-spec.ts',    // ✅ skip e2e tests entirely
+    '**/test/**/*.ts',     // ✅ skip test folders entirely
+  ],
+  rules: {
+    '@typescript-eslint/interface-name-prefix': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-explicit-any': 'warn',
+    '@typescript-eslint/no-floating-promises': [
+      'warn',
+      { ignoreVoid: true },
+    ],
+  },
+};

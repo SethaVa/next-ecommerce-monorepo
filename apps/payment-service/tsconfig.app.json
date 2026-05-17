@@ -1,0 +1,9 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "declaration": false,
+    "outDir": "../../dist/apps/payment-service",
+    "rootDir": "../../"
+  },
+  "exclude": ["node_modules", "test", "dist", "**/*spec.ts"]
+}

@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "ignoreDeprecations": "6.0",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "resolvePackageJsonExports": true,
+    "esModuleInterop": true,
+    "isolatedModules": false,
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2023",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": true,
+    "strictBindCallApply": true,
+    "noFallthroughCasesInSwitch": true,
+    "types": ["node", "jest"], // ✅ fixes "Cannot find name 'process'"
+    "paths": {
+      "y/common": ["libs/common/src"],
+      "y/common/*": ["libs/common/src/*"],
+      "y/database": ["libs/database/src"],
+      "y/database/*": ["libs/database/src/*"],
+      "y/events": ["libs/events/src"],
+      "y/events/*": ["libs/events/src/*"]
+    }
+  }
+}

@@ -1,0 +1,47 @@
+name: CD
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    name: Deploy (${{ matrix.service }})
+    runs-on: ubuntu-latest
+    environment: production
+    strategy:
+      matrix:
+        service:
+          - api-gateway
+          - user-service
+          - catalog-service
+          - order-service
+          - payment-service
+          - inventory-service
+          - notification-service
+          - shipping-service
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build ${{ matrix.service }}
+        run: npx nest build ${{ matrix.service }}
+
+      - name: Build Docker image
+        run: |
+          docker build \
+            --build-arg SERVICE=${{ matrix.service }} \
+            -t ${{ matrix.service }}:${{ github.sha }} .
+
+      # Replace the step below with your actual deploy target
+      # (ECS, K8s, Railway, Render, etc.)
+      - name: Deploy ${{ matrix.service }}
+        run: echo "Deploy ${{ matrix.service }} to your platform here"
