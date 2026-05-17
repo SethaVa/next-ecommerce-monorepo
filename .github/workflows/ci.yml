@@ -56,7 +56,7 @@ jobs:
         run: npm ci
 
       - name: Run tests for ${{ matrix.service }}
-        run: npx jest --testPathPattern="apps/${{ matrix.service }}" --passWithNoTests
+        run: npx jest "apps/${{ matrix.service }}" --passWithNoTests
 
   build:
     name: Build (${{ matrix.service }})
