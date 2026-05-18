@@ -1,0 +1,104 @@
+version: '3.9'
+
+services:
+  # ── Infrastructure ──────────────────────
+  redis:
+    image: redis:7-alpine
+    ports: ['6379:6379']
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      retries: 5
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ecommerce
+    ports: ['5432:5432']
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 10s
+      retries: 5
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - '5672:5672'
+      - '15672:15672' # Management UI
+    healthcheck:
+      test: ['CMD', 'rabbitmq-diagnostics', 'ping']
+      interval: 10s
+      retries: 5
+      start_period: 20s
+
+  # ── Microservices ────────────────────────
+  api-gateway:
+    command: npx nest start api-gateway --watch
+    volumes:
+      - .:/app
+      - /app/node_modules # ✅ keep container's node_modules, not host's
+    environment:
+      NODE_ENV: development
+
+  order-service:
+    command: npx nest start order-service --watch
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      NODE_ENV: development
+
+  user-service:
+    command: npx nest start user-service --watch
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      NODE_ENV: development
+
+  catalog-service:
+    command: npx nest start catalog-service --watch
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      NODE_ENV: development
+
+  payment-service:
+    command: npx nest start payment-service --watch
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      NODE_ENV: development
+
+  inventory-service:
+    command: npx nest start inventory-service --watch
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      NODE_ENV: development
+
+  notification-service:
+    command: npx nest start notification-service --watch
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      NODE_ENV: development
+
+  shipping-service:
+    command: npx nest start shipping-service --watch
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      NODE_ENV: development
+
+volumes:
+  pgdata:

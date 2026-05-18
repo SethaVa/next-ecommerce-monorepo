@@ -1,15 +1,9 @@
 import { NestFactory } from '@nestjs/core';
 import { ApiGatewayModule } from './api-gateway.module';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
-  const app = await NestFactory.createMicroservice<MicroserviceOptions>(ApiGatewayModule, {
-    transport: Transport.TCP,
-    options: {
-      host: '0.0.0.0',
-      port: parseInt(process.env.PORT ?? '3000'),
-    },
-  });
-  await app.listen();
+  const app = await NestFactory.create(ApiGatewayModule);
+  await app.listen(process.env.PORT ?? 3000);
+  console.log(`API Gateway running on port ${process.env.PORT ?? 3000}`);
 }
-bootstrap();
+void bootstrap();
