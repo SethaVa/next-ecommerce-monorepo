@@ -8,7 +8,23 @@ describe('ApiGatewayController', () => {
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [ApiGatewayController],
-      providers: [ApiGatewayService],
+      providers: [
+        ApiGatewayService,
+        {
+          provide: 'USER_SERVICE',
+          useValue: {
+            send: jest.fn(),
+            emit: jest.fn(),
+          },
+        },
+        {
+          provide: 'ORDER_SERVICE',
+          useValue: {
+            send: jest.fn(),
+            emit: jest.fn(),
+          },
+        },
+      ],
     }).compile();
 
     apiGatewayController = app.get<ApiGatewayController>(ApiGatewayController);
