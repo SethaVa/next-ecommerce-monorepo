@@ -22,7 +22,7 @@
     "noImplicitAny": true,
     "strictBindCallApply": true,
     "noFallthroughCasesInSwitch": true,
-    "types": ["node", "jest"], // ✅ fixes "Cannot find name 'process'"
+    "types": ["node", "jest"],
     "paths": {
       "y/common": ["libs/common/src"],
       "y/common/*": ["libs/common/src/*"],

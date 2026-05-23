@@ -22,6 +22,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Generate Prisma client
+        run: npx prisma generate
+
       - name: Check formatting
         run: npx prettier --check "apps/**/*.ts" "libs/**/*.ts"
 
@@ -55,6 +58,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Generate Prisma client
+        run: npx prisma generate
+
       - name: Run tests for ${{ matrix.service }}
         run: npx jest "apps/${{ matrix.service }}" --passWithNoTests
 
@@ -84,6 +90,9 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Generate Prisma client
+        run: npx prisma generate
 
       - name: Build ${{ matrix.service }}
         run: npx nest build ${{ matrix.service }}
