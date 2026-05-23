@@ -1,34 +1,44 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'y/database';
 import { CreateOrderPayload } from 'y/events';
 
 @Injectable()
 export class OrderServiceService {
+  constructor(private readonly prisma: PrismaService) {}
+
   getHello(): string {
     return 'Hello World!';
   }
 
-  create(payload: CreateOrderPayload) {
-    return {
-      id: 'order123',
-      userId: payload.userId,
-      items: payload.items,
-      total: payload.items.reduce((sum, item) => sum + item.price * item.quantity, 0),
-      status: 'created',
-    };
+  async create(payload: CreateOrderPayload) {
+    const total = payload.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+    return this.prisma.order.create({
+      data: {
+        userId: payload.userId,
+        total,
+        items: {
+          create: payload.items.map((item) => ({
+            productId: item.productId,
+            quantity: item.quantity,
+            price: item.price,
+          })),
+        },
+      },
+      include: { items: true },
+    });
   }
 
-  findOne(id: string) {
-    return {
-      id,
-      userId: 'user123',
-      items: [],
-      total: 0,
-      status: 'created',
-    };
+  async findOne(id: string) {
+    return this.prisma.order.findUnique({
+      where: { id },
+      include: { items: true },
+    });
   }
 
-  private orders = ['Test Order']; // temporary in-memory store
-  findAll() {
-    return this.orders; // ✅ must return something, even empty array
+  async findAll() {
+    return this.prisma.order.findMany({
+      include: { items: true },
+    });
   }
 }

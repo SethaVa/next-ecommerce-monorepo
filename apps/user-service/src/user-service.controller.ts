@@ -13,22 +13,23 @@ export class UserServiceController {
   }
 
   @MessagePattern(USER_PATTERNS.CREATE)
-  create(@Payload() payload: CreateUserPayload) {
-    return this.userServiceService.create(payload);
+  async create(@Payload() payload: CreateUserPayload) {
+    console.log('payload', payload);
+    return await this.userServiceService.create(payload);
   }
 
   @MessagePattern(USER_PATTERNS.GET_ONE)
-  findOne(@Payload() id: string) {
-    return this.userServiceService.findOne(id);
+  async findOne(@Payload() id: string) {
+    return await this.userServiceService.findOne(id);
   }
 
   @MessagePattern(USER_PATTERNS.GET_ALL)
-  findAll() {
-    return this.userServiceService.findAll();
+  async findAll() {
+    return await this.userServiceService.findAll();
   }
 
   @MessagePattern(USER_PATTERNS.VALIDATE)
-  validate(@Payload() payload: { email: string; password: string }) {
-    return this.userServiceService.validate(payload);
+  async validate(@Payload() payload: { email: string; password: string }) {
+    return await this.userServiceService.validate(payload);
   }
 }

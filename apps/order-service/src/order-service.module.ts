@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { OrderServiceController } from './order-service.controller';
 import { OrderServiceService } from './order-service.service';
+import { DatabaseModule } from 'y/database';
 
 @Module({
-  imports: [],
+  imports: [DatabaseModule],
   controllers: [OrderServiceController],
   providers: [OrderServiceService],
 })

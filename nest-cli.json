@@ -2,12 +2,13 @@
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
   "sourceRoot": "apps/ecommerce-monorepo/src",
+  "monorepo": true,
   "compilerOptions": {
     "deleteOutDir": true,
-    "webpack": true,
+    "webpack": false,
     "tsConfigPath": "apps/ecommerce-monorepo/tsconfig.app.json"
   },
-  "monorepo": true,
+
   "root": "apps/ecommerce-monorepo",
   "projects": {
     "api-gateway": {
@@ -16,6 +17,7 @@
       "entryFile": "main",
       "sourceRoot": "apps/api-gateway/src",
       "compilerOptions": {
+        "webpack": false,
         "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
       }
     },
@@ -25,6 +27,7 @@
       "entryFile": "main",
       "sourceRoot": "apps/catalog-service/src",
       "compilerOptions": {
+        "webpack": false,
         "tsConfigPath": "apps/catalog-service/tsconfig.app.json"
       }
     },
@@ -70,6 +73,7 @@
       "entryFile": "main",
       "sourceRoot": "apps/inventory-service/src",
       "compilerOptions": {
+        "webpack": false,
         "tsConfigPath": "apps/inventory-service/tsconfig.app.json"
       }
     },
@@ -79,6 +83,7 @@
       "entryFile": "main",
       "sourceRoot": "apps/notification-service/src",
       "compilerOptions": {
+        "webpack": false,
         "tsConfigPath": "apps/notification-service/tsconfig.app.json"
       }
     },
@@ -88,6 +93,7 @@
       "entryFile": "main",
       "sourceRoot": "apps/order-service/src",
       "compilerOptions": {
+        "webpack": false,
         "tsConfigPath": "apps/order-service/tsconfig.app.json"
       }
     },
@@ -97,6 +103,7 @@
       "entryFile": "main",
       "sourceRoot": "apps/payment-service/src",
       "compilerOptions": {
+        "webpack": false,
         "tsConfigPath": "apps/payment-service/tsconfig.app.json"
       }
     },
@@ -106,6 +113,7 @@
       "entryFile": "main",
       "sourceRoot": "apps/shipping-service/src",
       "compilerOptions": {
+        "webpack": false,
         "tsConfigPath": "apps/shipping-service/tsconfig.app.json"
       }
     },
@@ -115,6 +123,7 @@
       "entryFile": "main",
       "sourceRoot": "apps/user-service/src",
       "compilerOptions": {
+        "webpack": false,
         "tsConfigPath": "apps/user-service/tsconfig.app.json"
       }
     }

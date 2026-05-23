@@ -28,7 +28,7 @@ services:
     image: rabbitmq:3-management-alpine
     ports:
       - '5672:5672'
-      - '15672:15672' # Management UI
+      - '15672:15672'
     healthcheck:
       test: ['CMD', 'rabbitmq-diagnostics', 'ping']
       interval: 10s
@@ -43,17 +43,11 @@ services:
         SERVICE: api-gateway
     ports: ['3000:3000']
     environment:
-      NODE_ENV: development
+      NODE_ENV: production
       PORT: 3000
-      USER_SERVICE_HOST: user-service
-      USER_SERVICE_PORT: 3001
-      CATALOG_SERVICE_HOST: catalog-service
-      CATALOG_SERVICE_PORT: 3002
-      ORDER_SERVICE_HOST: order-service
-      ORDER_SERVICE_PORT: 3003
       RABBITMQ_URL: amqp://rabbitmq:5672
     depends_on:
-      redis: { condition: service_healthy }
+      rabbitmq: { condition: service_healthy }
     restart: unless-stopped
 
   user-service:
@@ -62,12 +56,13 @@ services:
       args:
         SERVICE: user-service
     environment:
-      RABBITMQ_URL: amqp://rabbitmq:5672
-      NODE_ENV: development
+      NODE_ENV: production
       PORT: 3001
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/ecommerce
+      RABBITMQ_URL: amqp://rabbitmq:5672
     depends_on:
       postgres: { condition: service_healthy }
+      rabbitmq: { condition: service_healthy }
     restart: unless-stopped
 
   catalog-service:
@@ -76,12 +71,13 @@ services:
       args:
         SERVICE: catalog-service
     environment:
-      RABBITMQ_URL: amqp://rabbitmq:5672
-      NODE_ENV: development
+      NODE_ENV: production
       PORT: 3002
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/ecommerce
+      RABBITMQ_URL: amqp://rabbitmq:5672
     depends_on:
       postgres: { condition: service_healthy }
+      rabbitmq: { condition: service_healthy }
     restart: unless-stopped
 
   order-service:
@@ -90,14 +86,13 @@ services:
       args:
         SERVICE: order-service
     environment:
-      RABBITMQ_URL: amqp://rabbitmq:5672
-      NODE_ENV: development
+      NODE_ENV: production
       PORT: 3003
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/ecommerce
+      RABBITMQ_URL: amqp://rabbitmq:5672
     depends_on:
       postgres: { condition: service_healthy }
-      rabbitmq:
-        condition: service_healthy
+      rabbitmq: { condition: service_healthy }
     restart: unless-stopped
 
   payment-service:
@@ -106,7 +101,7 @@ services:
       args:
         SERVICE: payment-service
     environment:
-      NODE_ENV: development
+      NODE_ENV: production
       PORT: 3004
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/ecommerce
       RABBITMQ_URL: amqp://rabbitmq:5672
@@ -121,12 +116,13 @@ services:
       args:
         SERVICE: inventory-service
     environment:
-      RABBITMQ_URL: amqp://rabbitmq:5672
-      NODE_ENV: development
+      NODE_ENV: production
       PORT: 3005
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/ecommerce
+      RABBITMQ_URL: amqp://rabbitmq:5672
     depends_on:
       postgres: { condition: service_healthy }
+      rabbitmq: { condition: service_healthy }
     restart: unless-stopped
 
   notification-service:
@@ -135,7 +131,7 @@ services:
       args:
         SERVICE: notification-service
     environment:
-      NODE_ENV: development
+      NODE_ENV: production
       PORT: 3006
       RABBITMQ_URL: amqp://rabbitmq:5672
     depends_on:
@@ -148,7 +144,7 @@ services:
       args:
         SERVICE: shipping-service
     environment:
-      NODE_ENV: development
+      NODE_ENV: production
       PORT: 3007
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/ecommerce
       RABBITMQ_URL: amqp://rabbitmq:5672

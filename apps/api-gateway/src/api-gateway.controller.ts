@@ -28,6 +28,7 @@ export class ApiGatewayController implements OnModuleInit {
   // ── Users ──────────────────────────────
   @Post('users')
   createUser(@Body() payload: CreateUserPayload) {
+    console.log('call now');
     return this.userClient.send(USER_PATTERNS.CREATE, payload);
   }
 
