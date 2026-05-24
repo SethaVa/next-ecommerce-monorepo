@@ -5,6 +5,7 @@ import { ClientProxy } from '@nestjs/microservices';
 import { CreateOrderPayload, CreateUserPayload } from 'y/events/payloads';
 import { ORDER_PATTERNS, USER_PATTERNS } from 'y/events';
 import { firstValueFrom, timeout } from 'rxjs';
+import { Public } from './auth/decorators/public.decorator';
 
 @Controller()
 export class ApiGatewayController implements OnModuleInit {
@@ -14,12 +15,16 @@ export class ApiGatewayController implements OnModuleInit {
     @Inject(SERVICES.ORDER) private readonly orderClient: ClientProxy,
   ) {}
 
-  // ✅ Eagerly connect on startup instead of lazy first-message connect
   async onModuleInit() {
-    await this.userClient.connect();
-    await this.orderClient.connect();
+    try {
+      await this.userClient.connect();
+      await this.orderClient.connect();
+    } catch (error) {
+      console.log('Failed to connect to microservices:', error);
+    }
   }
 
+  @Public()
   @Get()
   getHello(): string {
     return this.apiGatewayService.getHello();
@@ -39,6 +44,7 @@ export class ApiGatewayController implements OnModuleInit {
 
   @Get('users')
   getUsers() {
+    console.log('Getting all users');
     return this.userClient.send(USER_PATTERNS.GET_ALL, {});
   }
 

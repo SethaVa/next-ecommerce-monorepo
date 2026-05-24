@@ -26,3 +26,9 @@ export const PAYMENT_PATTERNS = {
   PROCESS: 'payment.process',
   REFUND: 'payment.refund',
 } as const;
+
+export const AUTH_PATTERNS = {
+  LOGIN: 'auth.login',
+  REGISTER: 'auth.register',
+  VALIDATE_TOKEN: 'auth.validateToken',
+} as const;

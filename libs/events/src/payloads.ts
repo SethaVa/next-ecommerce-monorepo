@@ -26,3 +26,30 @@ export interface ProcessPaymentPayload {
   currency: string;
   userId: string;
 }
+
+export interface LoginPayload {
+  email: string;
+  password: string;
+}
+
+export interface RegisterPayload {
+  email: string;
+  password: string;
+  name: string;
+}
+
+export interface JwtPayload {
+  sub: string; // user id
+  email: string;
+  iat?: number;
+  exp?: number;
+}
+
+export interface UserResponse {
+  id: string;
+  email: string;
+  name: string;
+  password: string;
+  createdAt: Date;
+  updatedAt: Date;
+}

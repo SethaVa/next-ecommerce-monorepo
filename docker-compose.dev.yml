@@ -1,6 +1,26 @@
 version: '3.9'
 
 services:
+  rabbitmq:
+    volumes:
+      - rabbitmqdata:/var/lib/rabbitmq
+    environment:
+      RABBITMQ_ERLANG_COOKIE: 'ecommerce-secret-cookie'
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  migrate:
+    build:
+      context: .
+      args:
+        SERVICE: user-service
+    command: sh -c "npx prisma migrate deploy"
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/ecommerce
+    depends_on:
+      postgres: { condition: service_healthy }
+    restart: 'no'
+
   api-gateway:
     build:
       context: .
@@ -15,8 +35,11 @@ services:
       NODE_ENV: development
       PORT: 3000
       RABBITMQ_URL: amqp://rabbitmq:5672
+      JWT_SECRET: it_is_hard_to_earn_money_in_covid_times
+
     depends_on:
       rabbitmq: { condition: service_healthy }
+      migrate: { condition: service_completed_successfully }
     restart: unless-stopped
 
   user-service:
@@ -36,6 +59,7 @@ services:
     depends_on:
       postgres: { condition: service_healthy }
       rabbitmq: { condition: service_healthy }
+      migrate: { condition: service_completed_successfully }
     restart: unless-stopped
 
   catalog-service:
@@ -55,6 +79,7 @@ services:
     depends_on:
       postgres: { condition: service_healthy }
       rabbitmq: { condition: service_healthy }
+      migrate: { condition: service_completed_successfully }
     restart: unless-stopped
 
   order-service:
@@ -74,6 +99,7 @@ services:
     depends_on:
       postgres: { condition: service_healthy }
       rabbitmq: { condition: service_healthy }
+      migrate: { condition: service_completed_successfully }
     restart: unless-stopped
 
   payment-service:
@@ -93,6 +119,7 @@ services:
     depends_on:
       postgres: { condition: service_healthy }
       rabbitmq: { condition: service_healthy }
+      migrate: { condition: service_completed_successfully }
     restart: unless-stopped
 
   inventory-service:
@@ -112,6 +139,7 @@ services:
     depends_on:
       postgres: { condition: service_healthy }
       rabbitmq: { condition: service_healthy }
+      migrate: { condition: service_completed_successfully }
     restart: unless-stopped
 
   notification-service:
@@ -129,6 +157,7 @@ services:
       RABBITMQ_URL: amqp://rabbitmq:5672
     depends_on:
       rabbitmq: { condition: service_healthy }
+      migrate: { condition: service_completed_successfully }
     restart: unless-stopped
 
   shipping-service:
@@ -148,4 +177,8 @@ services:
     depends_on:
       postgres: { condition: service_healthy }
       rabbitmq: { condition: service_healthy }
+      migrate: { condition: service_completed_successfully }
     restart: unless-stopped
+
+volumes:
+  rabbitmqdata:
