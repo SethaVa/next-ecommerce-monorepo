@@ -28,5 +28,10 @@ module.exports = {
       'warn',
       { ignoreVoid: true },
     ],
+    '@typescript-eslint/no-unused-vars': ['error', {
+      argsIgnorePattern: '^_',  // ✅ ignore args starting with _
+      varsIgnorePattern: '^_',
+      args: 'all',  // ✅ check all args, not just after last used
+    }],
   },
 };
